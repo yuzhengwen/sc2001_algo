@@ -1,15 +1,21 @@
-import random
+'''
+this file contains the basic implementation of the hybrid merge sort algorithm
+'''
+
+import os
 import timeit
 
 s = 100 # threshold value for switching to insertion sort
 data_list = []
+def get_list(size):
+    def read_array_from_file(file_path):
+        with open(file_path, 'r') as file:
+            # Read all lines, strip whitespace, and convert to integers
+            array = [int(line.strip()) for line in file]
+        return array
+    file_path = f'arrays/array_{size}.txt'
+    return read_array_from_file(file_path)
 
-def generate_input_data():
-    for i in range(1000, 2000):
-        data_list.append(generate_list(i, 0, 1000))
-
-def generate_list(n, min_val, max_val):
-    return [random.randint(min_val, max_val) for _ in range(n)]
 
 def hybrid_merge_sort(arr):
     def merge(arr, left, right):
@@ -69,11 +75,10 @@ def hybrid_merge_sort(arr):
     sort(arr)
 
 def benchmark():
-    for arr in data_list:
-        hybrid_merge_sort(arr)
-    return 0
+    hybrid_merge_sort(data_list[4])
 
-generate_input_data()
+# Load the data
+data_list = [get_list(size) for size in [1000, 10000, 100000, 1000000, 10000000]]
 # benchmark the task
 result = timeit.timeit('benchmark()', setup='from __main__ import benchmark', number=3)
 # calculate the average
